@@ -31,12 +31,12 @@ class MoodleRouter:
     instances = [User, QuizGrade, QuizAttempt]
 
     def db_for_read(self, model, **hints):
-        if type(model) in self.instances:
+        if model in self.instances:
             return 'moodle'
         return None
 
     def db_for_write(self, model, **hints):
-        if type(model) in self.instances:
+        if model in self.instances:
             return 'moodle'
         return None
 
