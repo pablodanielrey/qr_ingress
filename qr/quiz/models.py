@@ -9,6 +9,7 @@ class User(models.Model):
     email = models.CharField(max_length=1024)
     idnumber = models.CharField(max_length=1024)
     class Meta:
+        managed = False
         db_table = 'mdl_user'
 
 class QuizGrade(models.Model):
@@ -16,6 +17,7 @@ class QuizGrade(models.Model):
     userid = models.ForeignKey(User, related_name='grades', on_delete=models.CASCADE)
     grade = models.IntegerField()
     class Meta:
+        managed = False
         db_table= 'mdl_quiz_grades'
 
 class QuizAttempt(models.Model):
@@ -24,6 +26,7 @@ class QuizAttempt(models.Model):
     timestart = models.BigIntegerField()
     timefinish = models.BigIntegerField()
     class Meta:
+        managed = False
         db_table = 'mdl_quiz_attempts'
 
 class MoodleRouter:
