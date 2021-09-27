@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qr-config
+  namespace: qr
+  labels:
+    app: qr
+data:
+  DB_HOST: postgres.svc.cluster.local
+  DB_PORT: "5432"
+  DB_NAME: qr
+  DB_USER: qr
+  DB_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: qr
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: qr
+  POSTGRES_USER: qr
+  POSTGRES_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
