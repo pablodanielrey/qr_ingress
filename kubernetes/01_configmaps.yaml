@@ -7,11 +7,16 @@ metadata:
   labels:
     app: qr
 data:
-  DB_HOST: postgres.svc.cluster.local
-  DB_PORT: "5432"
-  DB_NAME: qr
-  DB_USER: qr
-  DB_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
+  DB_PRIMARY_HOST: postgres.svc.cluster.local
+  DB_PRIMARY_PORT: "5432"
+  DB_PRIMARY_NAME: qr
+  DB_PRIMARY_USER: qr
+  DB_PRIMARY_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
+  DB_QUIZ_HOST: postgres2.svc.cluster.local
+  DB_QUIZ_PORT: "5432"
+  DB_QUIZ_NAME: quiz
+  DB_QUIZ_USER: quiz
+  DB_QUIZ_PASSWORD: 25665d95ce33b12bded8bc9ff773dbc5b7ba07cf
 
 ---
 apiVersion: v1
@@ -25,3 +30,16 @@ data:
   POSTGRES_DB: qr
   POSTGRES_USER: qr
   POSTGRES_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-quiz-config
+  namespace: qr
+  labels:
+    app: postgres-quiz
+data:
+  POSTGRES_DB: quiz
+  POSTGRES_USER: quiz
+  POSTGRES_PASSWORD: 25665d95ce33b12bded8bc9ff773dbc5b7ba07cf

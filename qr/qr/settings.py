@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'quiz'
 ]
 
 MIDDLEWARE = [
@@ -70,21 +71,31 @@ TEMPLATES = [
 WSGI_APPLICATION = 'qr.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 import os
 
+DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
+
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'questions': {
-        'NAME': 'postgres',
+        'NAME': 'qr',
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'USER': os.environ.get("DB_USER"),
-        'PASSWORD': os.environ.get("DB_PASSWORD")
+        'HOST': os.environ.get('DB_PRIMARY_HOST'),
+        'USER': os.environ.get("DB_PRIMARY_USER"),
+        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    },
+    'moodle': {
+        'NAME': 'quiz',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_QUIZ_HOST'),
+        'USER': os.environ.get("DB_QUIZ_USER"),
+        'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
     }
 }
 

@@ -42,21 +42,61 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: postgres-quiz
   namespace: qr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: postgres-quiz
   template:
     metadata:
       labels:
-        app: redis
+        app: postgres-quiz
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: xiaomi
       containers:
-        - name: redis
-          image: redis
+        - name: postgres
+          image: postgres:13
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 6379
+            - containerPort: 5432
+          envFrom:
+            - configMapRef:
+                name: postgres-quiz-config
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgresdb
+            - mountPath: /var/lib/postgresql/wal
+              name: postgreswal
+      volumes:
+        - name: postgresdb
+          hostPath:
+            path: "/tmp/postgresql-quiz/data"
+        - name: postgreswal
+          hostPath:
+            path: "/tmp/postgresql-quiz/wal"  
+
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: redis
+#   namespace: qr
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: redis
+#   template:
+#     metadata:
+#       labels:
+#         app: redis
+#     spec:
+#       containers:
+#         - name: redis
+#           image: redis
+#           imagePullPolicy: "IfNotPresent"
+#           ports:
+#             - containerPort: 6379
