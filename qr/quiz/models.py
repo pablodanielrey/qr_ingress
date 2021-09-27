@@ -8,19 +8,23 @@ class User(models.Model):
     username = models.CharField(max_length=1024)
     email = models.CharField(max_length=1024)
     idnumber = models.CharField(max_length=1024)
+    class Meta:
+        db_table = 'mdl_user'
 
 class QuizGrade(models.Model):
     id = models.BigIntegerField(primary_key=True)
     userid = models.ForeignKey(User, related_name='grades', on_delete=models.CASCADE)
     grade = models.IntegerField()
-
+    class Meta:
+        db_table= 'mdl_quiz_grades'
 
 class QuizAttempt(models.Model):
     id = models.BigIntegerField(primary_key=True)
     userid = models.ForeignKey(User, related_name='attempts', on_delete=models.CASCADE)
     timestart = models.BigIntegerField()
     timefinish = models.BigIntegerField()
-    
+    class Meta:
+        db_table = 'mdl_quiz_attempts'
 
 class MoodleRouter:
 
@@ -42,6 +46,7 @@ class MoodleRouter:
         return None
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
+        print(f"Migration : {db} {app_label} {model_name}")
         if app_label == 'quiz':
             return db == 'moodle'
         return None
