@@ -33,7 +33,6 @@ def accepted(request):
     return JsonResponse({'status':200,'data':r}, json_dumps_params={"ensure_ascii": False})
 
 
-
 def _get_enabled_quiz(user_id):
     """
         retorna las respuestas que cumplen los parámetros para considerarse permitidas.
@@ -51,8 +50,11 @@ def _get_enabled_quiz(user_id):
         return None
     """
 
+    user = User.objects.get(id=user_id)
+    grades = user.grades.filter(quiz=7168, grade=10.0)
+    return user, grades
     #return QuizGrade.objects.filter(timemodified__gt=week_before_t, userid__id=user_id, grade=10.0)
-    return QuizGrade.objects.filter(quiz=7168, user__id=user_id, grade=10.0)
+    #return QuizGrade.objects.filter(quiz=7168, user__id=user_id, grade=10.0)
 
 def qr_code_view(request, user_id):
 
@@ -66,16 +68,19 @@ def qr_code_view(request, user_id):
     )
 
 
-    quizs = _get_enabled_quiz(user_id)
+    user, quizs = _get_enabled_quiz(user_id)
     quiz = quizs.first()
     if not quiz:
         print('No hay resultados')
+        qr.add_data(f"Persona: {user.firstname} {user.lastname};")
         qr.add_data('Inválido')
+        qr.add_data(uuid.uuid4())
     else:
         print(quiz)
         qr.add_data(f"Persona: {quiz.user.firstname} {quiz.user.lastname};")
         qr.add_data(f"Calificación: {quiz.grade}")
         qr.add_data(uuid.uuid4())
+        
     #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
     #qr.add_data('https://youtu.be/YqsdmQsjQds')
     #qr.add_data(f"WIFI:T:WPA;S:mynetwork;P:mypass;;")
