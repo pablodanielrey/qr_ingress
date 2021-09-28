@@ -27,7 +27,19 @@ def accepted(request):
 
 def qr_code_view(request, user_id):
     factory = qrcode.image.svg.SvgImage
-    image = qrcode.make('MECARD:N:Mariano Visentin;TEL:+54 9 11 6767-0165;;', image_factory=factory, box_size=20)
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=20,
+        border=4,
+        image_factory=factory
+    )
+    qr.add_data('Holaaaa Emiliooooooo - tenes permitida la entrada a FCE')
+    # qr.add_data('http://localhost:8000/quiz/')
+    # qr.add_data('MECARD:N:Mariano Visentin;TEL:+54 9 11 6767-0165;;')
+    # qr.add_data('mailto:mariano.visentin@econo.unlp.edu.ar')
+    
+    image = qr.make_image()
     stream = BytesIO()
     image.save(stream)
     data = stream.getvalue().decode()
