@@ -28,7 +28,8 @@ def accepted(request):
             'lastname': d.user.lastname,
             'idnumber':d.user.idnumber,
             'grade': d.grade,
-            'timemodified': d.timemodified
+            'timemodified': d.timemodified,
+            'date': datetime.utcfromtimestamp(d.timemodified).strftime('%Y-%m-%d %H:%M:%S')
         } for d in data
     ]
     print(r)
