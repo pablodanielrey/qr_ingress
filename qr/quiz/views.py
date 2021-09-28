@@ -78,13 +78,13 @@ def qr_code_view(request, user_id):
 
     
     if not user:
-        data = f"Inválido;{uuid.uuid4()}"
+        data = f"Inválido;{uuid.uuid4()};Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
     else:
         quiz = quizs.first()
         if not quiz:
-            data = f"Persona: {user.firstname} {user.lastname};Inválido;{uuid.uuid4()}"
+            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};{uuid.uuid4()}"
         else:
-            data = f"Persona: {quiz.user.firstname} {quiz.user.lastname};Calificación: {quiz.grade};{uuid.uuid4()}"
+            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{uuid.uuid4()}"
 
     #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
     #qr.add_data('https://youtu.be/YqsdmQsjQds')
