@@ -8,30 +8,39 @@ class User(models.Model):
     username = models.CharField(max_length=1024)
     email = models.CharField(max_length=1024)
     idnumber = models.CharField(max_length=1024)
+
+    def __str__(self):
+        return f"{self.username} {self.idnumber} {self.firstname} {self.lastname} {self.email}"
     class Meta:
         managed = False
         db_table = 'mdl_user'
 
 class QuizGrade(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    userid = models.ForeignKey(User, related_name='grades', on_delete=models.CASCADE)
-    grade = models.IntegerField()
+    user = models.ForeignKey(User, db_column='userid', related_name='grades', on_delete=models.CASCADE)
+    grade = models.FloatField()
+    timemodified = models.IntegerField()
+    quiz = models.BigIntegerField()
     class Meta:
         managed = False
         db_table= 'mdl_quiz_grades'
 
-class QuizAttempt(models.Model):
-    id = models.BigIntegerField(primary_key=True)
-    userid = models.ForeignKey(User, related_name='attempts', on_delete=models.CASCADE)
-    timestart = models.BigIntegerField()
-    timefinish = models.BigIntegerField()
-    class Meta:
-        managed = False
-        db_table = 'mdl_quiz_attempts'
+    def __str__(self):
+        return f"id:{self.id} grade:{self.grade} time:{self.timemodified}"
+
+# class QuizAttempt(models.Model):
+#     id = models.BigIntegerField(primary_key=True)
+#     userid = models.ForeignKey(User, related_name='attempts', on_delete=models.CASCADE)
+#     timestart = models.BigIntegerField()
+#     timefinish = models.BigIntegerField()
+#     class Meta:
+#         managed = False
+#         db_table = 'mdl_quiz_attempts'
 
 class MoodleRouter:
 
-    instances = [User, QuizGrade, QuizAttempt]
+#    instances = [User, QuizGrade, QuizAttempt]
+    instances = [User, QuizGrade]
 
     def db_for_read(self, model, **hints):
         if model in self.instances:

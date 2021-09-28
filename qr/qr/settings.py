@@ -91,9 +91,10 @@ DATABASES = {
         'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
     },
     'moodle': {
-        'NAME': 'quiz',
+        'NAME': os.environ.get('DB_QUIZ_NAME'),
         'ENGINE': 'django.db.backends.postgresql',
         'HOST': os.environ.get('DB_QUIZ_HOST'),
+        'PORT': os.environ.get('DB_QUIZ_PORT'),
         'USER': os.environ.get("DB_QUIZ_USER"),
         'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
     }
