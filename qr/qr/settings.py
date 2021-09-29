@@ -79,17 +79,17 @@ import os
 DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
     'default': {
-        'NAME': 'qr',
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_PRIMARY_HOST'),
-        'USER': os.environ.get("DB_PRIMARY_USER"),
-        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
+    # 'default': {
+    #     'NAME': 'qr',
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'HOST': os.environ.get('DB_PRIMARY_HOST'),
+    #     'USER': os.environ.get("DB_PRIMARY_USER"),
+    #     'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    # },
     'moodle': {
         'NAME': os.environ.get('DB_QUIZ_NAME'),
         'ENGINE': 'django.db.backends.postgresql',
