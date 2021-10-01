@@ -73,6 +73,8 @@ def _get_enabled_quiz(user_id):
         return user, grades
     except User.DoesNotExist as e:
         return None, None
+    except ValueError as e:
+        return None, None
     #return QuizGrade.objects.filter(timemodified__gt=week_before_t, userid__id=user_id, grade=10.0)
     #return QuizGrade.objects.filter(quiz=7168, user__id=user_id, grade=10.0)
 
@@ -100,18 +102,17 @@ def qr_code_view(request, user_id):
         image_factory=factory
     )
 
-
     user, quizs = _get_enabled_quiz(user_id)
 
     
     if not user:
-        data = f"Inválido;{uuid.uuid4()};Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
+        data = f"Inválido;{uuid.uuid4()};Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
     else:
         quiz = quizs.first()
         if not quiz:
-            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
+            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
         else:
-            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{random.randint(0,999999)}"
+            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{random.randint(0,999999)};"
 
     #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
     #qr.add_data('https://youtu.be/YqsdmQsjQds')
