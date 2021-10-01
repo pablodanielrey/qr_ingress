@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d=ko^dojcz=nxtwx^o24)@iqc#@!!m$j1em8iwda5=xp-@02qo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['qr.econo.unlp.edu.ar']
 
 
 # Application definition
@@ -79,17 +79,17 @@ import os
 DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
     # 'default': {
-    #     'NAME': 'qr',
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'HOST': os.environ.get('DB_PRIMARY_HOST'),
-    #     'USER': os.environ.get("DB_PRIMARY_USER"),
-    #     'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
+    'default': {
+        'NAME': os.environ.get('DB_PRIMARY_NAME'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_PRIMARY_HOST'),
+        'USER': os.environ.get("DB_PRIMARY_USER"),
+        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    },
     'moodle': {
         'NAME': os.environ.get('DB_QUIZ_NAME'),
         'ENGINE': 'django.db.backends.postgresql',
