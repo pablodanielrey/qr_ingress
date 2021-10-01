@@ -15,7 +15,7 @@ def _get_hmac_signature(data):
 def _verify_hmac(data):
     sdata = data.split(';')
     h = sdata[-1]
-    original_data = data.replace(f";{h}",'')
+    original_data = data.replace(f"{h}",'')
     newh = _get_hmac_signature(original_data)
     
     logging.debug(f"data:{data}\nhash:{h}\noriginal:{original_data}\nnew h:{newh}")
