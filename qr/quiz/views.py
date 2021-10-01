@@ -82,6 +82,13 @@ def _get_hmac_signature(data):
     h = hmac.new(bs, bytes(data,'utf-8'), hashlib.sha1).hexdigest()
     return h
 
+def _verify_hmac(data):
+    sdata = data.split(';')
+    h = sdata[-1]
+    original_data = data.replace(f";{h}",'')
+    newh = _get_hmac_signature(original_data)
+    return h == newh
+
 def qr_code_view(request, user_id):
 
     factory = qrcode.image.svg.SvgImage
