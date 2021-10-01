@@ -3,6 +3,9 @@ import os
 import hashlib
 import hmac
 
+import logging
+logging.getLogger().setLevel(logging.DEBUG)
+
 def _get_hmac_signature(data):
     s = os.environ.get('DJANGO_SECRET')
     bs = bytes(s, 'utf-8')
@@ -14,6 +17,8 @@ def _verify_hmac(data):
     h = sdata[-1]
     original_data = data.replace(f";{h}",'')
     newh = _get_hmac_signature(original_data)
+    
+    logging.debug(f"data:{data}\nhash:{h}\noriginal:{original_data}\nnew h:{newh}")
     return h == newh
 
 if __name__ == '__main__':
