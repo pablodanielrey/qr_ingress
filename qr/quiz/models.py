@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 
 # Create your models here.
@@ -12,17 +14,20 @@ class User(models.Model):
     def __str__(self):
         return f"{self.username} {self.idnumber} {self.firstname} {self.lastname} {self.email}"
     class Meta:
-        managed = False
+        managed = True
         db_table = 'mdl_user'
 
+
+def _get_now_timestamp():
+    return int(datetime.datetime.now().timestamp())
 class QuizGrade(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.ForeignKey(User, db_column='userid', related_name='grades', on_delete=models.CASCADE)
-    grade = models.FloatField()
-    timemodified = models.IntegerField()
-    quiz = models.BigIntegerField()
+    grade = models.FloatField(default=0.0)
+    timemodified = models.IntegerField(default=_get_now_timestamp())
+    quiz = models.BigIntegerField(default=7168)
     class Meta:
-        managed = False
+        managed = True
         db_table= 'mdl_quiz_grades'
 
     def __str__(self):
