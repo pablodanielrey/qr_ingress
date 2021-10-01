@@ -16,8 +16,8 @@ from io import BytesIO
 
 # Create your views here.
 
-def accepted(request):
 
+def _get_accepted():
     data = QuizGrade.objects.filter(quiz=7168)
     # jdata = serializers.serialize('json',data)
     r = [
@@ -32,8 +32,18 @@ def accepted(request):
             'date': datetime.utcfromtimestamp(d.timemodified).strftime('%Y-%m-%d %H:%M:%S')
         } for d in data
     ]
+    return r
+
+def accepted(request):
+    r = _get_accepted()
     print(r)
     return JsonResponse({'status':200,'data':r}, json_dumps_params={"ensure_ascii": False})
+
+def index(request):
+    context = {
+        'quizes':_get_accepted()
+    }
+    return render(request, 'quiz_index.tmpl', context)
 
 
 def _get_enabled_quiz(user_id):
@@ -99,3 +109,4 @@ def qr_code_view(request, user_id):
     image.save(stream)
     data = stream.getvalue().decode()
     return HttpResponse(data, content_type='image/svg+xml')
+

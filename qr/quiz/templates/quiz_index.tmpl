@@ -1,0 +1,16 @@
+
+<html>
+<body>
+    {% for quiz in quizes %}
+        <div>
+            <a href="{% url 'quiz:qr' quiz.user_id %}">ver qr</a>
+            Usuario: {{quiz.username}}
+            Nombre: {{quiz.firstname}}
+            Apellido: {{quiz.lastname}}
+            Legajo: {{quiz.idnumber}}
+            Nota: {{quiz.grade}}
+            Fecha: {{quiz.date}}
+        </div>
+    {% endfor %}
+</body>
+</html>

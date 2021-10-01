@@ -2,7 +2,8 @@ from django.urls import path
 
 from . import views
 
+app_name='quiz'
 urlpatterns = [
-    path('', views.accepted),
-    path('qr/<str:user_id>', views.qr_code_view)
+    path('', views.index),
+    path('qr/<str:user_id>', views.qr_code_view, name='qr')
 ]
