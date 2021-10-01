@@ -19,6 +19,7 @@ data:
   DB_QUIZ_PASSWORD: 25665d95ce33b12bded8bc9ff773dbc5b7ba07cf
   DEBUG: "1"
   ALLOWED_HOSTS: "*"
+  DJANGO_SECRET: "django-insecure-d=ko^dojcz=nxtwx^o24)@iqc#@!!m$j1em8iwda5=xp-@02qo"
 
 ---
 apiVersion: v1
