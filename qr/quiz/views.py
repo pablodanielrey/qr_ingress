@@ -106,13 +106,13 @@ def qr_code_view(request, user_id):
 
     
     if not user:
-        data = f"Inválido;{uuid.uuid4()};Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
+        data = f"I;D:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
     else:
         quiz = quizs.first()
         if not quiz:
-            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
+            data = f"I;FN:{user.firstname};LN:{user.lastname};D:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
         else:
-            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{random.randint(0,999999)};"
+            data = f"V;FN:{user.firstname};LN:{user.lastname};C:{quiz.grade};D:{datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};R:{random.randint(0,999999)};"
 
     #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
     #qr.add_data('https://youtu.be/YqsdmQsjQds')
