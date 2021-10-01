@@ -6,6 +6,10 @@ from django.db import models
 
 from datetime import datetime, timezone
 import uuid
+import hashlib
+import hmac
+import os
+import random
 
 from .models import QuizGrade, User
 
@@ -72,6 +76,12 @@ def _get_enabled_quiz(user_id):
     #return QuizGrade.objects.filter(timemodified__gt=week_before_t, userid__id=user_id, grade=10.0)
     #return QuizGrade.objects.filter(quiz=7168, user__id=user_id, grade=10.0)
 
+def _get_hmac_signature(data):
+    s = os.environ.get('DJANGO_SECRET')
+    bs = bytes(s, 'utf-8')
+    h = hmac.new(bs, bytes(data,'utf-8'), hashlib.sha1).hexdigest()
+    return h
+
 def qr_code_view(request, user_id):
 
     factory = qrcode.image.svg.SvgImage
@@ -92,9 +102,9 @@ def qr_code_view(request, user_id):
     else:
         quiz = quizs.first()
         if not quiz:
-            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};{uuid.uuid4()}"
+            data = f"Persona: {user.firstname} {user.lastname};Inválido;Fecha:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')}"
         else:
-            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{uuid.uuid4()}"
+            data = f"Persona: {user.firstname} {user.lastname};Calificación: {quiz.grade};Fecha: {datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};{random.randint(0,999999)}"
 
     #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
     #qr.add_data('https://youtu.be/YqsdmQsjQds')
@@ -103,6 +113,7 @@ def qr_code_view(request, user_id):
     # qr.add_data('MECARD:N:Mariano Visentin;TEL:+54 9 11 6767-0165;;')
     # qr.add_data('mailto:mariano.visentin@econo.unlp.edu.ar')
     qr.add_data(data)
+    qr.add_data(_get_hmac_signature(data))
 
     image = qr.make_image()
     stream = BytesIO()
