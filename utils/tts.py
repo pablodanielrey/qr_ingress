@@ -12,5 +12,8 @@ def change_voice(engine, language, gender='VoiceGenderFemale'):
 if __name__ == '__main__':
     engine = pyttsx3.init()
     engine.setProperty('voice','spanish')
-    engine.say("Hola!!! Leonardo Consolini!!! podes ingresar")
+    # engine.say('Código cu!!ere!! válido')
+    # engine.say("inválido")
+    # engine.say('Podés ingresar')
+    engine.say('ANDATE DE ACA COVIDOSO')
     engine.runAndWait()

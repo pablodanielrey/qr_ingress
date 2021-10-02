@@ -1,0 +1,17 @@
+<form id='qrform' name="qrform" target="#here" method="post">
+    <input id='qrcode' name="qr" type="text" /><br />
+    <!-- <input type="submit" hidden/> -->
+</form>
+
+<script type="text/javascript">
+    var e = document.getElementById('qrcode');
+    e.focus();
+    e.addEventListener("keypress", function(event) {
+        if (event.which == 10 || event.which == 13) {
+            console.debug('enviando qr al servidor');
+            console.debug(e.value);
+            document.getElementById("qrform").submit();
+        }
+    })
+
+  </script>
