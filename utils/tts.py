@@ -15,5 +15,5 @@ if __name__ == '__main__':
     # engine.say('Código cu!!ere!! válido')
     # engine.say("inválido")
     # engine.say('Podés ingresar')
-    engine.say('ANDATE DE ACA COVIDOSO')
+    engine.say('ANDATE DE ACAAAA COVIDOSO')
     engine.runAndWait()

@@ -1,0 +1,17 @@
+<html>
+<body>
+    <div>ACCESO AUTORIZADO</div>
+    <div id='timer'>9</div>
+    <script type="text/javascript">
+        var x = setInterval(function() {
+            var e = document.getElementById('timer');
+            var number = e.innerHTML;
+            if (number > 0) {
+                e.innerHTML = number - 1;
+            } else {
+                window.location.replace("{% url 'reader:index' %}");
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
