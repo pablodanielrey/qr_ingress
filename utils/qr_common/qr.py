@@ -3,6 +3,7 @@ import random
 import os
 import hmac
 import hashlib
+from typing import OrderedDict
 
 
 def timestamp_to_date(timestamp):
@@ -21,11 +22,21 @@ class QRCode:
         return self.grade == 10
 
     def to_message(self):
-        return f"FN:{self.firstname};LN:{self.lastname};C:{self.grade};D:{self.timestamp};R:{self.salt}"
+        data = [ f"{k}:{v}" for k,v in self.to_dict().items()]
+        return ';'.join(data)
+        #return f"FN:{self.firstname};LN:{self.lastname};C:{self.grade};D:{self.timestamp};R:{self.salt}"
 
+    def to_dict(self):
+        return OrderedDict({
+            'FN': self.firstname,
+            'LN': self.lastname,
+            'C': self.grade,
+            'D': self.timestamp,
+            'R': self.salt
+        })
 
     @classmethod
-    def _decode_to_dict(cls, data:str):
+    def _str_to_dict(cls, data:str):
         decoded = {}
         sdata = data.split(';')
         for field in sdata:
@@ -37,12 +48,17 @@ class QRCode:
         return decoded
 
     @classmethod
+    def from_dict(cls, d:dict):
+        salt = int(d['R'])
+        grade = d['C'] if 'C' in d else None
+        timestamp = int(d['D']) if 'D' in d else None
+        qr = QRCode(d['FN'], d['LN'], grade, timestamp, salt)
+        return qr
+
+    @classmethod
     def from_message(cls, data:str):
-        decoded = cls._decode_to_dict(data)
-        salt = int(decoded['R'])
-        grade = decoded['C'] if 'C' in decoded else None
-        timestamp = int(decoded['D']) if 'D' in decoded else None
-        qr = QRCode(decoded['FN'], decoded['LN'], grade, timestamp, salt)
+        decoded = cls._str_to_dict(data)
+        qr = cls.from_dict(decoded)
         return qr
 
 
