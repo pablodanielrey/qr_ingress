@@ -5,7 +5,7 @@
 <body>
 
     <form id='qrform' name="qrform" target="{% url 'reader:index' %}" method="post">
-        <input id='qrcode' name="qrcode" type="text" /><br />
+        <input id='qrcode' name="qrcode" value="" type="text" /><br />
         <!-- <input type="submit" hidden/> -->
         {% csrf_token %}
     </form>
