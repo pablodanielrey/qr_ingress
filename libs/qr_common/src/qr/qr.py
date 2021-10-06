@@ -67,7 +67,7 @@ class QRCode:
 
 class Message:
 
-    SECRET_KEY = bytes(os.environ.get('QR_SECRET','1234567890'), 'utf-8')
+    SECRET_KEY = bytes(os.environ.get('MESSAGE_SECRET','1234567890'), 'utf-8')
     SALT_LEN = 4
 
     @classmethod
