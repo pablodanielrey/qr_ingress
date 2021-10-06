@@ -5,6 +5,7 @@ import hmac
 import hashlib
 from typing import OrderedDict
 
+from .exceptions import InvalidHash
 
 def timestamp_to_date(timestamp):
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
@@ -19,7 +20,7 @@ class QRCode:
         self.salt = salt if salt else random.randint(0,999999)
 
     def _has_access(self):
-        return self.grade == 10
+        return int(self.grade) == 10
 
     def to_message(self):
         data = [ f"{k}:{v}" for k,v in self.to_dict().items()]
@@ -50,7 +51,7 @@ class QRCode:
     @classmethod
     def from_dict(cls, d:dict):
         salt = int(d['R'])
-        grade = d['C'] if 'C' in d else None
+        grade = float(d['C']) if 'C' in d else None
         timestamp = int(d['D']) if 'D' in d else None
         qr = QRCode(d['FN'], d['LN'], grade, timestamp, salt)
         return qr
@@ -83,7 +84,7 @@ class Message:
         message = Message(message_data)
         if message.hash_ == hash_:
             return message
-        raise Exception(f'{message.hash_} != {hash_}')
+        raise InvalidHash(f'{message.hash_} != {hash_}')
 
     def to_string(self):
         return f"{self.message};{self.hash_}"

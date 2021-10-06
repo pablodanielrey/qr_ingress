@@ -1,0 +1,3 @@
+
+class InvalidHash(Exception):
+    pass
