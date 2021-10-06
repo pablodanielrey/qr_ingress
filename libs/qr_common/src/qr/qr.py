@@ -3,6 +3,8 @@ import random
 import os
 import hmac
 import hashlib
+import secrets
+import base64
 from typing import OrderedDict
 
 from .exceptions import InvalidHash
@@ -12,19 +14,20 @@ def timestamp_to_date(timestamp):
 
 class QRCode:
     
-    def __init__(self, firstname, lastname, grade=None, timestamp=None, salt=None):
+    def __init__(self, firstname, lastname, grade=None, timestamp=None):
         self.firstname = firstname
         self.lastname = lastname
         self.grade = grade if grade else 0
         self.timestamp = timestamp if timestamp else int(datetime.datetime.utcnow().timestamp())
-        self.salt = salt if salt else random.randint(0,999999)
 
     def _has_access(self):
         return int(self.grade) == 10
 
     def to_message(self):
         data = [ f"{k}:{v}" for k,v in self.to_dict().items()]
-        return ';'.join(data)
+        sdata = ';'.join(data)
+        bdata = base64.b64encode(bytes(sdata,'utf8')).decode('utf8')
+        return bdata
         #return f"FN:{self.firstname};LN:{self.lastname};C:{self.grade};D:{self.timestamp};R:{self.salt}"
 
     def to_dict(self):
@@ -32,8 +35,7 @@ class QRCode:
             'FN': self.firstname,
             'LN': self.lastname,
             'C': self.grade,
-            'D': self.timestamp,
-            'R': self.salt
+            'D': self.timestamp
         })
 
     @classmethod
@@ -50,15 +52,15 @@ class QRCode:
 
     @classmethod
     def from_dict(cls, d:dict):
-        salt = int(d['R'])
         grade = float(d['C']) if 'C' in d else None
         timestamp = int(d['D']) if 'D' in d else None
-        qr = QRCode(d['FN'], d['LN'], grade, timestamp, salt)
+        qr = QRCode(d['FN'], d['LN'], grade, timestamp)
         return qr
 
     @classmethod
     def from_message(cls, data:str):
-        decoded = cls._str_to_dict(data)
+        bdata = base64.b64decode(data).decode('utf8')
+        decoded = cls._str_to_dict(bdata)
         qr = cls.from_dict(decoded)
         return qr
 
@@ -66,25 +68,24 @@ class QRCode:
 class Message:
 
     SECRET_KEY = bytes(os.environ.get('QR_SECRET','1234567890'), 'utf-8')
+    SALT_LEN = 4
 
     @classmethod
-    def _get_hmac_signature(cls, data:str):
-        bdata = bytes(data,'utf-8')
-        return hmac.new(cls.SECRET_KEY, bdata, hashlib.sha1).hexdigest()
+    def _get_hmac_signature(cls, salt:str, data:str):
+        return hmac.new(cls.SECRET_KEY, bytes(f"{salt}{data}",'utf8'), hashlib.sha1).hexdigest()
 
-    def __init__(self, data:str):
+    def __init__(self, data:str, salt=None):
         self.message = data
-        self.hash_ = self._get_hmac_signature(self.message)
+        self.salt = salt if salt else secrets.token_hex(self.SALT_LEN)
+        self.hash_ = self._get_hmac_signature(self.salt, self.message)
 
     @classmethod
     def from_string(cls, data:str):
-        process = data.split(';')
-        hash_ = process[-1]
-        message_data = ';'.join(process[0:-1])
-        message = Message(message_data)
-        if message.hash_ == hash_:
+        salt, message_data, hash_ = data.split(';')
+        message = Message(message_data, salt)
+        if hmac.compare_digest(message.hash_,hash_):
             return message
         raise InvalidHash(f'{message.hash_} != {hash_}')
 
     def to_string(self):
-        return f"{self.message};{self.hash_}"
+        return f"{self.salt};{self.message};{self.hash_}"

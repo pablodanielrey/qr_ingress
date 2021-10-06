@@ -6,16 +6,6 @@ import qrcode
 import qrcode.image.svg
 from io import BytesIO
 
-import hashlib
-import hmac
-
-def _get_hmac_signature(data):
-    s = os.environ.get('DJANGO_SECRET')
-    bs = bytes(s, 'utf-8')
-    h = hmac.new(bs, bytes(data,'utf-8'), hashlib.sha1).hexdigest()
-    return h
-
-
 def generate_qr(data):
     factory = qrcode.image.svg.SvgImage
     qr = qrcode.QRCode(
@@ -26,8 +16,6 @@ def generate_qr(data):
         image_factory=factory
     )
     qr.add_data(data)
-    qr.add_data(";")
-    qr.add_data(_get_hmac_signature(data))    
     image = qr.make_image()
     return image
 
