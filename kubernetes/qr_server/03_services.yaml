@@ -1,0 +1,30 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: qr
+  labels:
+    app: postgres
+spec:
+  ports:
+   - port: 5432
+     targetPort: 5432
+  selector:
+   app: postgres
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-quiz
+  namespace: qr
+  labels:
+    app: postgres-quiz
+spec:
+  ports:
+   - port: 5432
+     targetPort: 5432
+  selector:
+   app: postgres-quiz
+
