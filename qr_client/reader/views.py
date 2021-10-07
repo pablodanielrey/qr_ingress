@@ -27,6 +27,9 @@ def index(request:HttpRequest):
             return redirect('reader:invalid_qr')
 
         logging.debug(qrc.to_dict())
+        for k,v in qrc.to_dict().items():
+            request.session[k] = v
+
         if qrc._has_access():
             return redirect('reader:access_authorized')
 
@@ -34,10 +37,27 @@ def index(request:HttpRequest):
     
 
 def authorized(request):
-    return render(request, 'authorized.html', {'timer':2})
+    context = {
+        'timer': 12
+    }
+    for k,v in request.session.items():
+        context[k] = v
+    return render(request, 'authorized.html', context)
 
 def denied(request):
-    return render(request, 'denied.html', {'timer':2})
+    context = {
+        'timer': 12
+    }
+    for k,v in request.session.items():
+        context[k] = v
+
+    return render(request, 'denied.html', context)
 
 def invalid(request):
-    return render(request, 'invalid.html', {'timer':2})
+    context = {
+        'timer': 12
+    }
+    for k,v in request.session.items():
+        context[k] = v
+
+    return render(request, 'invalid.html', context)
