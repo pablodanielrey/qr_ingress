@@ -22,8 +22,7 @@ def generate_qr(data):
     return image
 
 if __name__ == '__main__':
-    url = sys.argv[1]
-    f = sys.argv[2]
+    f = sys.argv[1]
 
 
     print('QR de acceso permitido')
