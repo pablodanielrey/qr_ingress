@@ -7,7 +7,7 @@ import secrets
 import base64
 from typing import OrderedDict
 
-from .exceptions import InvalidHash
+from .exceptions import InvalidHash, InvalidMessage
 
 def timestamp_to_date(timestamp):
     return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
@@ -81,7 +81,11 @@ class Message:
 
     @classmethod
     def from_string(cls, data:str):
-        salt, message_data, hash_ = data.split(';')
+        try:
+            salt, message_data, hash_ = data.split(';')
+        except ValueError as e:
+            raise InvalidMessage()
+
         message = Message(message_data, salt)
         if hmac.compare_digest(message.hash_,hash_):
             return message

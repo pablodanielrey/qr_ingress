@@ -25,6 +25,10 @@ def index(request:HttpRequest):
         except exceptions.InvalidHash as e:
             logging.exception(e)
             return redirect('reader:invalid_qr')
+        except exceptions.InvalidMessage as e:
+            logging.exception(e)
+            return redirect('reader:invalid_qr')
+
 
         logging.debug(qrc.to_dict())
         for k,v in qrc.to_dict().items():
