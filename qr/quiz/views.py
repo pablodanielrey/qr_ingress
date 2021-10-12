@@ -101,7 +101,7 @@ def qr_code_view(request):
     quizs = _get_enabled_quiz(moodle_user)
     quiz = quizs.first()
     if not quiz:
-        return render(request, 'invalid_quiz.html')
+        return render(request, 'invalid_quiz.html', user)
 
     factory = qrcode.image.svg.SvgImage
     qr_c = qrcode.QRCode(
