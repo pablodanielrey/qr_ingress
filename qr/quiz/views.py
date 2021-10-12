@@ -15,6 +15,7 @@ import json
 ### Vistas de la parte de oauth
 #####
 from authlib.integrations.django_client import OAuth
+from authlib.integrations.base_client.errors import OAuthError
 
 oauth = OAuth()
 oauth.register(
@@ -36,20 +37,27 @@ def login(request):
 
 
 def authorize(request):
-    token = oauth.econo.authorize_access_token(request)
-    # resp = oauth.econo.get('user', token=token)
-    # resp.raise_for_status()
-    # profile = resp.json()
-    # #userinfo = oauth.econo.userinfo(token=token)
-    # user = {
-    #     'email': userinfo.email,
-    #     'username': userinfo.preferred_username
-    # }
-    # return HttpResponse(json.dumps(userinfo,ensure_ascii=False))
-    userinfo = oauth.econo.parse_id_token(request, token)
-    logging.debug(userinfo)
-    request.session['user'] = userinfo
-    return redirect('/')
+    try:
+        token = oauth.econo.authorize_access_token(request)
+        # resp = oauth.econo.get('user', token=token)
+        # resp.raise_for_status()
+        # profile = resp.json()
+        # #userinfo = oauth.econo.userinfo(token=token)
+        # user = {
+        #     'email': userinfo.email,
+        #     'username': userinfo.preferred_username
+        # }
+        # return HttpResponse(json.dumps(userinfo,ensure_ascii=False))
+        userinfo = oauth.econo.parse_id_token(request, token)
+        logging.debug(userinfo)
+        request.session['user'] = userinfo
+        return redirect('/')
+
+    except OAuthError as e:
+        context = {
+            'error': e.description
+        }
+        return render(request, 'error_oauth.html', context)
 
 def logout(request):
     request.session.pop('user', None)
