@@ -1,9 +1,15 @@
 <html>
 <body>
     <h1>usuario no registrado en au24</h1>
+    <div>
+        <div>
+            Se encuentra intentando obtener un código qr de acceso usando el usuario 
+            {{ preferred_username }}
+            {{ email }}
+        </div>
+        <a href="/logout">cambiar usuario</a>
+    </div>
     <h2>Debe completar primero la declaración jurada de COVID</h2>
-    {{ preferred_username }}
-    {{ email }}
     <a href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">declaración jurada COVID</a>
     
 </body>

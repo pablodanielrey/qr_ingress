@@ -1,12 +1,18 @@
 <html>
 <body>
+    <h1>Acceso permitido</h1>
     <div>
-        {{ user.firstname }}
-        {{ user.lastname }}
-        {{ user.username }}
-        {{ user.email }}
-        {{ user.idnumber }}
+        Se ha generado el siguiente código de acceso para:
+        <div>
+            {{ user.firstname }}
+            {{ user.lastname }}
+            {{ user.username }}
+            {{ user.email }}
+            {{ user.idnumber }}
+        </div>
     </div>
-    <img src="data:image/svg+xml;base64,{{qr_image}}"/>    
+    <img src="data:image/svg+xml;base64,{{qr_image}}"/>  
+    
+    <div>para cambiar la declaración jurada de COVID ingrese <a href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">aquí</a></div>
 </body>
 </html>
