@@ -14,11 +14,15 @@ def timestamp_to_date(timestamp):
 
 class QRCode:
     
-    def __init__(self, firstname, lastname, grade=None, timestamp=None):
+    def __init__(self, firstname, lastname, username=None, email=None, id_number=None, grade=None, timestamp=None):
+        self.generated = int(datetime.datetime.utcnow().timestamp())
         self.firstname = firstname
         self.lastname = lastname
+        self.username = username
+        self.email = email
+        self.id_number = id_number
         self.grade = grade if grade else 0
-        self.timestamp = timestamp if timestamp else int(datetime.datetime.utcnow().timestamp())
+        self.timestamp = timestamp if timestamp else self.generated
 
     def _has_access(self):
         return int(self.grade) == 10
@@ -34,8 +38,12 @@ class QRCode:
         return OrderedDict({
             'FN': self.firstname,
             'LN': self.lastname,
+            'E': self.email if self.email else '',
+            'U': self.username if self.username else '',
+            'IN': self.id_number if self.id_number else '', 
             'C': self.grade,
-            'D': self.timestamp
+            'D': self.timestamp,
+            'G': self.generated
         })
 
     @classmethod
@@ -54,7 +62,10 @@ class QRCode:
     def from_dict(cls, d:dict):
         grade = float(d['C']) if 'C' in d else None
         timestamp = int(d['D']) if 'D' in d else None
-        qr = QRCode(d['FN'], d['LN'], grade, timestamp)
+        username = d['U'] if 'U' in d else None
+        email = d['E'] if 'E' in d else None
+        id_number = d['IN'] if 'IN' in d else None
+        qr = QRCode(d['FN'], d['LN'], username, email, id_number, grade, timestamp)
         return qr
 
     @classmethod

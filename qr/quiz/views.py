@@ -120,7 +120,7 @@ def qr_code_view(request):
         image_factory=factory
     )
 
-    qr_code = qr.QRCode(moodle_user.firstname, moodle_user.lastname, quiz.grade, quiz.timemodified)
+    qr_code = qr.QRCode(moodle_user.firstname, moodle_user.lastname,  moodle_user.username, moodle_user.email, moodle_user.idnumber, quiz.grade, quiz.timemodified)
     message = qr.Message(qr_code.to_message())
 
     qr_c.add_data(message.to_string())

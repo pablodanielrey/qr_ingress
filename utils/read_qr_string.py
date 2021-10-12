@@ -1,5 +1,5 @@
 import json
-from qr.qr import QRCode, Message
+from qr_common.qr import QRCode, Message
 
 
 if __name__ == '__main__':
