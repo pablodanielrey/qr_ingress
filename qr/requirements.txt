@@ -3,3 +3,4 @@ psycopg2
 qrcode
 django-oauth-toolkit
 django-cors-headers
+Authlib>=0.15.4

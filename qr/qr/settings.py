@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'oauth2_provider',
+    # 'corsheaders',
     'quiz'
 ]
 
@@ -79,29 +81,29 @@ WSGI_APPLICATION = 'qr.wsgi.application'
 DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
-    # 'moodle': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3_moodle',
-    # },
     'default': {
-        'NAME': os.environ.get('DB_PRIMARY_NAME'),
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_PRIMARY_HOST'),
-        'USER': os.environ.get("DB_PRIMARY_USER"),
-        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     },
     'moodle': {
-        'NAME': os.environ.get('DB_QUIZ_NAME'),
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_QUIZ_HOST'),
-        'PORT': os.environ.get('DB_QUIZ_PORT'),
-        'USER': os.environ.get("DB_QUIZ_USER"),
-        'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3_moodle',
+    },
+    # 'default': {
+    #     'NAME': os.environ.get('DB_PRIMARY_NAME'),
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'HOST': os.environ.get('DB_PRIMARY_HOST'),
+    #     'USER': os.environ.get("DB_PRIMARY_USER"),
+    #     'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    # },
+    # 'moodle': {
+    #     'NAME': os.environ.get('DB_QUIZ_NAME'),
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'HOST': os.environ.get('DB_QUIZ_HOST'),
+    #     'PORT': os.environ.get('DB_QUIZ_PORT'),
+    #     'USER': os.environ.get("DB_QUIZ_USER"),
+    #     'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
+    # }
 }
 
 
@@ -147,3 +149,29 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+#Configuración oauthlib de django.
+
+# AUTHLIB_OAUTH_CLIENTS = {
+#     'econo': {
+#         'client_id': os.environ.get('OAUTH_CLIENT_ID',''),
+#         'client_secret': os.environ.get('OAUTH_CLIENT_SECRET',''),
+#         'request_token_url': 'https://oidc.econo.unlp.edu.ar/oauth2/token',
+#         'request_token_params': None,
+#         'access_token_url': 'https://oidc.econo.unlp.edu.ar/oauth2/token',
+#         'access_token_params': None,
+#         'refresh_token_url': None,
+#         'authorize_url': 'https://oidc.econo.unlp.edu.ar/oauth2/auth',
+#         'api_base_url': 'https://oidc.econo.unlp.edu.ar',
+#         'client_kwargs': None
+#     }
+# }
+
+
+AUTHLIB_OAUTH_CLIENTS = {
+    'econo': {
+        'client_id': os.getenv('OAUTH_CLIENT_ID'),
+        'client_secret': os.getenv('OAUTH_CLIENT_SECRET')
+    }
+}

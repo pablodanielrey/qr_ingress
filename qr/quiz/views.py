@@ -1,24 +1,167 @@
-from django.shortcuts import render
+from django.http.request import HttpRequest
+from django.urls import reverse
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 from django.db import models
-
+from django.conf import settings
 # from django.core import serializers
 
+import logging
+logging.getLogger().setLevel(logging.DEBUG)
+import json
+
+
+#####
+### Vistas de la parte de oauth
+#####
+from authlib.integrations.django_client import OAuth
+
+oauth = OAuth()
+oauth.register(
+    name='econo',
+    server_metadata_url='https://oidc.econo.unlp.edu.ar/.well-known/openid-configuration',
+    client_kwargs={
+        'scope': 'openid email profile'
+    }
+)
+
+
+def login(request):
+    if request.session.get('user', None):
+        return redirect('/')
+
+    econo = oauth.create_client('econo')
+    redirect_uri = request.build_absolute_uri(reverse('quiz:authorize'))
+    return econo.authorize_redirect(request, redirect_uri)
+
+
+def authorize(request):
+    token = oauth.econo.authorize_access_token(request)
+    # resp = oauth.econo.get('user', token=token)
+    # resp.raise_for_status()
+    # profile = resp.json()
+    # #userinfo = oauth.econo.userinfo(token=token)
+    # user = {
+    #     'email': userinfo.email,
+    #     'username': userinfo.preferred_username
+    # }
+    # return HttpResponse(json.dumps(userinfo,ensure_ascii=False))
+    userinfo = oauth.econo.parse_id_token(request, token)
+    logging.debug(userinfo)
+    request.session['user'] = userinfo
+    return redirect('/')
+
+def logout(request):
+    request.session.pop('user', None)
+    return redirect('/')
+
+
+####
+## Vistas de la sección de qr
+#####
+
 from datetime import datetime, timezone
-import uuid
-import hashlib
-import hmac
 import os
-import random
-
-from .models import QuizGrade, User
-
 #https://medium.com/geekculture/how-to-generate-a-qr-code-in-django-e32179d7fdf2
 import qrcode
 import qrcode.image.svg
 from io import BytesIO
+import base64
 
-# Create your views here.
+from qr_common import qr
+
+from .models import QuizGrade, User
+
+
+
+def _get_enabled_quiz(user):
+    grades = user.grades.filter(quiz=7168, grade=10.0)
+    return grades
+
+def _get_moodle_user(user):
+    username = user['preferred_username']
+    moodle_user = User.objects.get(username=username)
+    return moodle_user
+
+
+def qr_code_view(request):
+    user = user = request.session.get('user', None)
+    if not user:
+        redirect_uri = request.build_absolute_uri(reverse('quiz:login'))
+        return redirect(redirect_uri, permanent=False)
+
+    logging.debug(json.dumps(user))
+
+    try:
+        
+        moodle_user = _get_moodle_user(user)
+    except User.DoesNotExist as e:
+        return render(request, 'invalid_user.html', user)
+
+    quizs = _get_enabled_quiz(moodle_user)
+    quiz = quizs.first()
+    if not quiz:
+        return render(request, 'invalid_quiz.html')
+
+    factory = qrcode.image.svg.SvgImage
+    qr_c = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=20,
+        border=4,
+        image_factory=factory
+    )
+
+    qr_code = qr.QRCode(moodle_user.firstname, moodle_user.lastname, quiz.grade, quiz.timemodified)
+    message = qr.Message(qr_code.to_message())
+
+    qr_c.add_data(message.to_string())
+    
+    image = qr_c.make_image()
+    stream = BytesIO()
+    image.save(stream)
+    data = stream.getvalue().decode()
+    # return HttpResponse(data, content_type='image/svg+xml')
+
+    bdata = base64.b64encode(bytes(data,'utf-8'))
+    context = {
+        'qr_image': bdata.decode('utf8'),
+        'user': moodle_user
+    }
+    return render(request,'qr_code.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def _get_accepted():
@@ -49,83 +192,7 @@ def index(request):
     }
     return render(request, 'quiz_index.tmpl', context)
 
-
-def _get_enabled_quiz(user_id):
-    """
-        retorna las respuestas que cumplen los parámetros para considerarse permitidas.
-    """
-    dt = datetime.now()
-    nowt = dt.timestamp()
-
-    week_seconds = 60 * 60 * 24 * 7
-    week_before_t = nowt - week_seconds
-
-    """
-    attempts = QuizAttempt.objects.filter(timefinish__gt=week_before_t, userid__id=user_id)
-    attempt = attempts.first()
-    if not attempt:
-        return None
-    """
-
-    try:
-        user = User.objects.get(id=user_id)
-        grades = user.grades.filter(quiz=7168, grade=10.0)
-        return user, grades
-    except User.DoesNotExist as e:
-        return None, None
-    except ValueError as e:
-        return None, None
-    #return QuizGrade.objects.filter(timemodified__gt=week_before_t, userid__id=user_id, grade=10.0)
-    #return QuizGrade.objects.filter(quiz=7168, user__id=user_id, grade=10.0)
-
-def _get_hmac_signature(data):
-    s = os.environ.get('DJANGO_SECRET')
-    bs = bytes(s, 'utf-8')
-    h = hmac.new(bs, bytes(data,'utf-8'), hashlib.sha1).hexdigest()
-    return h
-
-def _verify_hmac(data):
-    sdata = data.split(';')
-    h = sdata[-1]
-    original_data = data.replace(f";{h}",'')
-    newh = _get_hmac_signature(original_data)
-    return h == newh
-
-def qr_code_view(request, user_id):
-
-    factory = qrcode.image.svg.SvgImage
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=20,
-        border=4,
-        image_factory=factory
-    )
-
-    user, quizs = _get_enabled_quiz(user_id)
-
-    
-    if not user:
-        data = f"I;D:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
-    else:
-        quiz = quizs.first()
-        if not quiz:
-            data = f"I;FN:{user.firstname};LN:{user.lastname};D:{datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')};"
-        else:
-            data = f"V;FN:{user.firstname};LN:{user.lastname};C:{quiz.grade};D:{datetime.utcfromtimestamp(quiz.timemodified).strftime('%Y-%m-%d %H:%M:%S')};R:{random.randint(0,999999)};"
-
-    #qr.add_data(f"MECARD:N:{user.firstname} {user.lastname};TEL:+54 9 221 3033138;;")
-    #qr.add_data('https://youtu.be/YqsdmQsjQds')
-    #qr.add_data(f"WIFI:T:WPA;S:mynetwork;P:mypass;;")
-    # qr.add_data('http://localhost:8000/quiz/')
-    # qr.add_data('MECARD:N:Mariano Visentin;TEL:+54 9 11 6767-0165;;')
-    # qr.add_data('mailto:mariano.visentin@econo.unlp.edu.ar')
-    qr.add_data(data)
-    qr.add_data(_get_hmac_signature(data))
-
-    image = qr.make_image()
-    stream = BytesIO()
-    image.save(stream)
-    data = stream.getvalue().decode()
-    return HttpResponse(data, content_type='image/svg+xml')
-
+def login_example(request:HttpRequest):
+    if not request.user.is_authenticated:
+        return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
+    return HttpResponse(request.user.username)
