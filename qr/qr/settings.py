@@ -81,29 +81,29 @@ WSGI_APPLICATION = 'qr.wsgi.application'
 DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'moodle': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3_moodle',
-    },
     # 'default': {
-    #     'NAME': os.environ.get('DB_PRIMARY_NAME'),
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'HOST': os.environ.get('DB_PRIMARY_HOST'),
-    #     'USER': os.environ.get("DB_PRIMARY_USER"),
-    #     'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
     # 'moodle': {
-    #     'NAME': os.environ.get('DB_QUIZ_NAME'),
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'HOST': os.environ.get('DB_QUIZ_HOST'),
-    #     'PORT': os.environ.get('DB_QUIZ_PORT'),
-    #     'USER': os.environ.get("DB_QUIZ_USER"),
-    #     'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
-    # }
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3_moodle',
+    # },
+    'default': {
+        'NAME': os.environ.get('DB_PRIMARY_NAME'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_PRIMARY_HOST'),
+        'USER': os.environ.get("DB_PRIMARY_USER"),
+        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    },
+    'moodle': {
+        'NAME': os.environ.get('DB_QUIZ_NAME'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': os.environ.get('DB_QUIZ_HOST'),
+        'PORT': os.environ.get('DB_QUIZ_PORT'),
+        'USER': os.environ.get("DB_QUIZ_USER"),
+        'PASSWORD': os.environ.get("DB_QUIZ_PASSWORD")
+    }
 }
 
 

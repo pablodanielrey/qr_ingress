@@ -1,7 +1,7 @@
 FROM python:3.9.7-slim-buster
 
 RUN apt-get update && apt-get install -y \
-  postgresql-server-dev-all \
+  #postgresql-server-dev-all \
   supervisor \
   python3-pip \
   && apt-get clean \
@@ -16,6 +16,12 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN pip install --upgrade pip
+
+COPY libs /tmp/libs
+RUN pip install -r /tmp/libs/requirements.txt
+RUN cd /tmp/libs/qr_common && python3 -m build && pip install /tmp/libs/qr_common/dist/qr_common-0.0.1-py3-none-any.whl
+
+
 COPY qr/requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 

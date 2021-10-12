@@ -1,6 +1,8 @@
+requests
 django
-psycopg2
+psycopg2-binary
 qrcode
-django-oauth-toolkit
-django-cors-headers
+#django-oauth-toolkit
+#django-cors-headers
 Authlib>=0.15.4
+qr_common
