@@ -175,3 +175,7 @@ AUTHLIB_OAUTH_CLIENTS = {
         'client_secret': os.getenv('OAUTH_CLIENT_SECRET')
     }
 }
+
+# para cuando se pasa atras del proxy en producción
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

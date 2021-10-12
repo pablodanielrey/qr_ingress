@@ -14,7 +14,7 @@ class User(models.Model):
     def __str__(self):
         return f"{self.username} {self.idnumber} {self.firstname} {self.lastname} {self.email}"
     class Meta:
-        managed = True
+        managed = False
         db_table = 'mdl_user'
 
 
@@ -27,7 +27,7 @@ class QuizGrade(models.Model):
     timemodified = models.IntegerField(default=_get_now_timestamp())
     quiz = models.BigIntegerField(default=7168)
     class Meta:
-        managed = True
+        managed = False
         db_table= 'mdl_quiz_grades'
 
     def __str__(self):
