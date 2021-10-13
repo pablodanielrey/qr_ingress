@@ -11,6 +11,8 @@ from qr_common import qr, exceptions
 
 # Create your views here.
 
+TIMER = 3
+
 def index(request:HttpRequest):
     if request.method == 'GET':
         return render(request, 'reader.html')
@@ -42,7 +44,7 @@ def index(request:HttpRequest):
 
 def authorized(request):
     context = {
-        'timer': 12
+        'timer': TIMER
     }
     for k,v in request.session.items():
         context[k] = v
@@ -50,7 +52,7 @@ def authorized(request):
 
 def denied(request):
     context = {
-        'timer': 12
+        'timer': TIMER
     }
     for k,v in request.session.items():
         context[k] = v
@@ -59,7 +61,7 @@ def denied(request):
 
 def invalid(request):
     context = {
-        'timer': 12
+        'timer': TIMER
     }
     for k,v in request.session.items():
         context[k] = v
