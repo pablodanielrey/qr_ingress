@@ -7,7 +7,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 
-from qr import qr, exceptions
+from qr_common import qr, exceptions
 
 # Create your views here.
 
