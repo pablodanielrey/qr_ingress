@@ -3,46 +3,24 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: qr-config
-  namespace: qr
+  namespace: qr-reader
   labels:
     app: qr
 data:
-  DB_PRIMARY_HOST: postgres.svc.cluster.local
-  DB_PRIMARY_PORT: "5432"
-  DB_PRIMARY_NAME: qr
-  DB_PRIMARY_USER: qr
-  DB_PRIMARY_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
-  DB_QUIZ_HOST: postgres2.svc.cluster.local
-  DB_QUIZ_PORT: "5432"
-  DB_QUIZ_NAME: quiz
-  DB_QUIZ_USER: quiz
-  DB_QUIZ_PASSWORD: 25665d95ce33b12bded8bc9ff773dbc5b7ba07cf
   DEBUG: "1"
   ALLOWED_HOSTS: "*"
-  DJANGO_SECRET: "django-insecure-d=ko^dojcz=nxtwx^o24)@iqc#@!!m$j1em8iwda5=xp-@02qo"
+  DJANGO_SECRET: "algo-super-secreto"
+  MESSAGE_SECRET: "algo-super-secreto"
 
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-config
-  namespace: qr
+  namespace: qr-reader
   labels:
     app: postgres
 data:
   POSTGRES_DB: qr
   POSTGRES_USER: qr
-  POSTGRES_PASSWORD: 2a3424668931718aee67f72e03451962ef4d5d67
-
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-quiz-config
-  namespace: qr
-  labels:
-    app: postgres-quiz
-data:
-  POSTGRES_DB: quiz
-  POSTGRES_USER: quiz
-  POSTGRES_PASSWORD: 25665d95ce33b12bded8bc9ff773dbc5b7ba07cf
+  POSTGRES_PASSWORD: super-secreto

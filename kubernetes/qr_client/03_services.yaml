@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: qr
+  namespace: qr-reader
   labels:
     app: postgres
 spec:
@@ -17,14 +17,19 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-quiz
-  namespace: qr
+  name: qr-ui
+  namespace: qr-reader
   labels:
-    app: postgres-quiz
+    app: qr-ui
 spec:
+  # type: NodePort
+  # externalIPs:
+  #   - 127.0.0.1
   ports:
-   - port: 5432
-     targetPort: 5432
+   - port: 80
+     targetPort: 8000
   selector:
-   app: postgres-quiz
+   app: qr-ui
+
+
 
