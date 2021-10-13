@@ -121,6 +121,7 @@ def qr_code_view(request):
     )
 
     qr_code = qr.QRCode(moodle_user.firstname, moodle_user.lastname,  moodle_user.username, moodle_user.email, moodle_user.idnumber, quiz.grade, quiz.timemodified)
+    logging.debug(qr_code.to_message())
     message = qr.Message(qr_code.to_message())
 
     qr_c.add_data(message.to_string())
