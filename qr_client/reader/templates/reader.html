@@ -8,7 +8,7 @@
     <img src="{% static 'reader/url_qr.svg' %}" alt="Qr url">
 
     <h2>Datos QR escaneados</h2>
-    <form id='qrform' name="qrform" target="{% url 'reader:index' %}" method="post">
+    <form id='qrform' name="qrform" method="post">
         <input id='qrcode' name="qrcode" value="" type="text" style='width: 800px;' /><br />
         <!-- <input type="submit" hidden/> -->
         {% csrf_token %}
