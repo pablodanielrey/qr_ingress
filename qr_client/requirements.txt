@@ -1,0 +1,4 @@
+requests
+django
+psycopg2-binary
+qr_common
