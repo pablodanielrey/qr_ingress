@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+  }*
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "roboto";
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(90deg,#2cda00,#2a7920) !important;
+
+}
+
+
+
+.titulo {
+    font-size: 60;
+    color: white;
+    font-weight: 300;
+    text-align: center;
+}
+
+.mensaje {
+    font-size: 40;
+    color: white;
+    font-weight: 100;
+    text-align: center;
+
+}
+
+.mensaje2 {
+  font-size: 30;
+  color: white;
+  font-weight: 100;
+  text-align: center;
+
+}
+
+
+
+
+.icorefresh {
+    text-align: center;
+    color: white;
+    opacity: 25%;
+    margin-top: 20px;
+}
+
+.contenedor {
+    animation-duration: 0.5s;
+    animation-name: aparecer;
+}
+
+
+  @keyframes aparecer {
+    from {
+      margin-top: 200px;
+      opacity: 0%;
+    }
+  
+    to {
+      margin-top: 0%;
+      opacity: 100%;
+    }
+  }
+
+
+  #timer {
+      opacity: 0%;
+      text-align: center;
+      margin-top: 10px;
+  }

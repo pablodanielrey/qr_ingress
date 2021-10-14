@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+  }*
+
+body {
+    font-family: "roboto";
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 100%;
+}
+
+.bienvenidos {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    padding: 40px;
+    background: #5fcbe6;
+    background: linear-gradient(
+90deg,#0090d8,#00AAFF) !important;
+width: 65%;
+
+
+}
+
+.titulo {
+    
+    font-size: 80;
+    font-weight: 100;
+}
+
+.bienvenido {
+    font-size: 25;
+    font-weight: 300;
+}
+
+.mensaje {
+    font-size: 60;
+    color: white;
+    font-weight: 300;
+    padding: 40;
+    margin: 40 0 40 0;
+
+
+}
+
+.icoEsperando {
+    color: white;
+    font-size: 120px !important;
+    opacity: 70%;
+    margin-bottom: 10px;
+}
+
+.textIco {
+    color: white;
+    opacity: 70%;
+    font-size: 25px;
+    font-weight: 100;
+
+}
+
+.funcionalidad {
+    position: absolute;
+    opacity: 0%;
+    top:0;
+}
+
+.generarQR {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 35%;
+
+}
+
+.conentedorImportante {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.textNoQR {
+    font-size: 25;
+    font-weight: 300;
+    text-align: justify;
+    margin: 60px;
+}
+
+.icoImport {
+    font-size: 150px !important;
+    text-align: center;
+    margin: 0 auto ;
+    color: gray;
+}
+
+.textImportante {
+    font-size: 30;
+    color: rgb(32, 32, 32);
+    font-weight: 300;
+
+
+}
+
+.textComo {
+    font-size: 30;
+    color: rgb(32, 32, 32);
+    font-weight: 500;
+
+
+}
+
+.qr {
+    width: 200px;
+    height: 200px;
+}

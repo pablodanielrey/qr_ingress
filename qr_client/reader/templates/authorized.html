@@ -1,20 +1,26 @@
 <html>
+    <head>
+        {% load static %}
+        <title>Acceso Autorizado</title>
+        <link rel="stylesheet" href="{% static 'reader/authorized.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+    
+    
+    </head>
 <body>
-    <h1>ACCESO AUTORIZADO</h1>
-    <div>{{FN}} {{LN}}</div>
-    <div>{{E}}</div>
-    <div>{{U}}
-    <div id='timer'>{{timer}}</div>
-    <script type="text/javascript">
-        var x = setInterval(function() {
-            var e = document.getElementById('timer');
-            var number = e.innerHTML;
-            if (number > 0) {
-                e.innerHTML = number - 1;
-            } else {
-                window.location.replace("{% url 'reader:index' %}");
-            }
-        }, 1000);
-    </script>
+
+    <div class="Contenedor">
+        <div class="titulo">ACCESO <b>AUTORIZADO</b></div>
+        <div class="mensaje">{{FN}} - {{LN}}  </div>
+        <div class="mensaje2">{{E}} - {{U}} </div>
+
+        <div id='timer'>{{timer}}</div>
+        <div class="icorefresh"><i class="fa fa-refresh fa-spin fa-3x fa-fw " aria-hidden="true"></i></div>
+
+    </div>
+
+
 </body>
 </html>

@@ -1,36 +1,77 @@
 <html>
 <head>
-    <title>qr code reader</title>
+    {% load static %}
+    <title>¡Hola!</title>
+    <link rel="stylesheet" href="{% static 'reader/reader.css' %}">
+    <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
-    <h1>Si no posee de qr para acceder por favor genérelo escaneando el siguiente código qr</h1>
-    {% load static %}
-    <img src="{% static 'reader/url_qr.svg' %}" alt="Qr url">
+    <div class="contenedor">
+        <div class="bienvenidos">
+            
+            <div>
+                <div class="titulo">¡Hola!</div>
+                <div class="bienvenido">Bienvenido/a a la Facultad de Ciencias Econónomicas</div>
+            </div>
 
-    <h2>Datos QR escaneados</h2>
-    <form id='qrform' name="qrform" method="post">
-        <input id='qrcode' name="qrcode" value="" type="text" style='width: 800px;' /><br />
-        <!-- <input type="submit" hidden/> -->
-        {% csrf_token %}
-    </form>
+            <div class="mensaje">PARA ACCEDER<BR><B>ESCANEA TU CÓDIGO QR</B> <br> EN EL LECTOR</div>
+            
+            <div>
+                <i class=" icoEsperando fa fa-spinner fa-pulse fa-5x fa-fw"></i><br>
+                <span class="textIco">esperando escaneo...</span>
+            </div>
+           
+            <div class="funcionalidad">
+                <form id='qrform' name="qrform" target="{% url 'reader:index' %}" method="post">
+                    <input id='qrcode' name="qrcode" value="" type="text" style='width: 800px;' /><br />
+                    <!-- <input type="submit" hidden/> -->
+                    {% csrf_token %}
+                </form>
+            
+                <script type="text/javascript">
+                    var e = document.getElementById('qrcode');
+                    e.focus();
+                    e.addEventListener("keypress", function(event) {
+                        if (event.which == 10 || event.which == 13) {
+                            console.debug('enviando qr al servidor');
+                            console.debug(e.value);
+                            document.getElementById("qrform").submit();
+                        }
+                    })
+            
+                </script>
+            </div>
 
-    <script type="text/javascript">
-        var e = document.getElementById('qrcode');
-        e.focus();
-        e.addEventListener("keypress", function(event) {
-            if (event.which == 10 || event.which == 13) {
-                console.debug('enviando qr al servidor');
-                console.debug(e.value);
-                document.getElementById("qrform").submit();
-            }
-        })
 
-        var x = setInterval(function() {
-            var e = document.getElementById('qrcode');
-            e.focus();
-        }, 1000);        
+        </div>
+        <div class="generarQR">
 
-    </script>
+            <div class="conentedorImportante">
+                <div>
+                    <i class="fa fa-question  fa-4x icoImport" aria-hidden="true"></i>
+                </div>
+                <div class="textImportante">No tengo mi QR</b></div>
+                <div class="textComo">¿ Cómo lo obtengo ?</b></div>
+
+            </div>
+
+            <div class="textNoQR">
+                Si aún no dispones de tu codido QR para acceder, escanea el código QR en la pantalla para obtener uno completando la declaración jurada. 
+            </div>
+
+            <div class="qr">
+                <img src="{% static 'reader/url_qr.svg' %}" alt="Qr url">
+            </div>
+        </div>
+    </div>
+
+
+
+ 
 
 </body>
 </html>
