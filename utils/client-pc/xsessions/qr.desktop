@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Qr
+#Exec=gnome-session --systemd --session=kiosk
+#TryExec=/usr/bin/gnome-shell --mode=kiosk
+#Exec=google-chrome-stable --app=https://www.econo.unlp.edu.ar --kiosk
+#Exec=/usr/bin/chromium-browser --start-fullscreen --app=https://www.econo.unlp.edu.ar
+#Exec=/usr/bin/i3
+Exec=/home/qr/ejecutar.sh
+#TryExec=/usr/bin/gnome-shell
