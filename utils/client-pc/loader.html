@@ -1,0 +1,34 @@
+<html>
+<body>
+
+    <div style="display=center;">
+        <h1>Cargando Sistema</h1>
+        <img src="spinner.gif"></img>
+    </div>
+    <div id="imagenes" style='display:none;'></div>
+
+    <script type="text/javascript">
+
+        function checkServerStatus()
+        {
+            var d = document.getElementById('imagenes');
+            var img = d.appendChild(document.createElement("img"));
+            img.onload = function()
+            {
+                document.href = "http://www.google.com"
+            };
+            img.onerror = function()
+            {
+                console.log('todavía no se encuentra online');
+            };
+            //img.src = "http://10.107.73.172";
+            img.src = "http://www.econo.unlp.edu.ar/favicon.ico";
+        }
+
+        var x = setInterval(function() {
+            checkServerStatus();
+        }, 10000);        
+
+    </script>    
+</body>
+</html>

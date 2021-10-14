@@ -68,8 +68,9 @@ width: 65%;
 
 .funcionalidad {
     position: absolute;
-    opacity: 0%;
-    top:0;
+    opacity: 100%;
+    bottom:150;
+    left: 10%;
 }
 
 .generarQR {
