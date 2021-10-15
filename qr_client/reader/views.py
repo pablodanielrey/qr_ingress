@@ -13,6 +13,11 @@ from qr_common import qr, exceptions
 
 TIMER = 3
 
+def _record_access(qrcode:qr.QRCode):
+    # aca se debería obtener el usuario y si no existe agregarlo.
+    # posterioremnete generar un registro de acceso asociado a ese usuario
+    pass
+
 def index(request:HttpRequest):
     if request.method == 'GET':
         return render(request, 'reader.html')
@@ -36,9 +41,15 @@ def index(request:HttpRequest):
         for k,v in qrc.to_dict().items():
             request.session[k] = v
 
-        if qrc._has_access():
-            return redirect('reader:access_authorized')
+        try:
+            if qrc._has_access():
+                _record_access(qrc)
+                return redirect('reader:access_authorized')
 
+        except Exception as e:
+            logging.exception(e)
+            return redirect('reader:access_denied')     
+            
         return redirect('reader:access_denied') 
     
 

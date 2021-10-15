@@ -14,8 +14,9 @@ def timestamp_to_date(timestamp):
 
 class QRCode:
     
-    def __init__(self, firstname, lastname, username=None, email=None, id_number=None, grade=None, timestamp=None):
+    def __init__(self, external_id, firstname, lastname, username=None, email=None, id_number=None, grade=None, timestamp=None):
         self.generated = int(datetime.datetime.utcnow().timestamp())
+        self.external_id = external_id
         self.firstname = firstname
         self.lastname = lastname
         self.username = username
@@ -36,6 +37,7 @@ class QRCode:
 
     def to_dict(self):
         return OrderedDict({
+            'ID': self.external_id,
             'FN': self.firstname,
             'LN': self.lastname,
             'E': self.email if self.email else '',
@@ -65,7 +67,7 @@ class QRCode:
         username = d['U'] if 'U' in d else None
         email = d['E'] if 'E' in d else None
         id_number = d['IN'] if 'IN' in d else None
-        qr = QRCode(d['FN'], d['LN'], username, email, id_number, grade, timestamp)
+        qr = QRCode(d['ID'],d['FN'], d['LN'], username, email, id_number, grade, timestamp)
         return qr
 
     @classmethod
