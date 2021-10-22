@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -26,8 +27,11 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET','django-insecure-d=ko^dojcz=nxtwx^o2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get('DEBUG','0') == '1' else False
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','*').split(';')
+# ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS','*').split(';')
+# logging.debug(ALLOWED_HOSTS)
 
+
+ALLOWED_HOSTS="*"
 
 # Application definition
 
@@ -81,21 +85,21 @@ WSGI_APPLICATION = 'qr.wsgi.application'
 DATABASE_ROUTERS = ['quiz.models.MoodleRouter']
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # },
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
     # 'moodle': {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3_moodle',
     # },
-    'default': {
-        'NAME': os.environ.get('DB_PRIMARY_NAME'),
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_PRIMARY_HOST'),
-        'USER': os.environ.get("DB_PRIMARY_USER"),
-        'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
-    },
+    # 'default': {
+    #     'NAME': os.environ.get('DB_PRIMARY_NAME'),
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'HOST': os.environ.get('DB_PRIMARY_HOST'),
+    #     'USER': os.environ.get("DB_PRIMARY_USER"),
+    #     'PASSWORD': os.environ.get("DB_PRIMARY_PASSWORD")
+    # },
     'moodle': {
         'NAME': os.environ.get('DB_QUIZ_NAME'),
         'ENGINE': 'django.db.backends.postgresql',

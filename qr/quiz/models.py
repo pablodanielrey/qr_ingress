@@ -20,6 +20,7 @@ class User(models.Model):
 
 def _get_now_timestamp():
     return int(datetime.datetime.now().timestamp())
+    
 class QuizGrade(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.ForeignKey(User, db_column='userid', related_name='grades', on_delete=models.CASCADE)

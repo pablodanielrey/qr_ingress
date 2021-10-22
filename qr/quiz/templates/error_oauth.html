@@ -1,10 +1,32 @@
 <html>
-    <body>
-        <h1>Ups!!!</h1>
-        <h2>hemos encontrado un error</h2>
-        <div>
-            {{ error }}
+    <head>
+        {% load static %}
+        <title>Error</title>
+        <link rel="stylesheet" href="{% static 'error_oauth.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+    
+    
+    </head>
+<body>
+
+
+        <div class="Contenedor">
+            <div class="icorefresh"><i class="fa fa-frown-o fa-5x fa-fw " aria-hidden="true"></i></div>
+
+            <div class="titulo">SE HA PRODUCIDO UN </b></div>
+            <div class="titulo2"> <b>ERRROR</b></div>
+
+            <div class="mensaje">{{ error }} </div>
+            <div class="contenedorBtn">
+                <a class="btn" href="/">REINTENTAR</a>
+            </div>
+
+            
+            
         </div>
-        <a href="/">reintentar</a>
-    </body>
+
+</body>
 </html>
+

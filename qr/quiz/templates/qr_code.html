@@ -1,19 +1,52 @@
 <html>
-<body>
-    <h1>Acceso permitido</h1>
-    <div>
-        Se ha generado el siguiente código de acceso para:
-        <div>
-            {{ user.firstname }}
-            {{ user.lastname }}
-            {{ user.username }}
-            {{ user.email }}
-            {{ user.idnumber }}
-        </div>
-        <a href="/logout">cambiar usuario</a>
-    </div>
-    <img src="data:image/svg+xml;base64,{{qr_image}}"/>  
+    <head>
+        {% load static %}
+        <title>Acceso Permitido</title>
+        <link rel="stylesheet" href="{% static 'qr_code.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
     
-    <div>para cambiar la declaración jurada de COVID ingrese <a href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">aquí</a></div>
+    
+    </head>
+
+
+
+<body>
+    <div class="contenedor">
+        <div class="titulo"><b>ACCESO PERMITIDO</div>
+    </div>
+
+    <div class="mensaje2">Mi Código de Acceso
+    </div>
+
+    <div class="contenedorQR">
+        <img class="qr" src="data:image/svg+xml;base64,{{qr_image}}"/>  
+
+    </div>
+
+    <div class="contenedor2">
+
+        <div class="mensaje">   
+                 Datos de Usuario<br>
+                 <b>{{ user.firstname }} {{ user.lastname }}</b><br>
+                 <b>{{ user.username }}</b><br>
+                 <b>{{ user.email }}</b><br>
+                 <b>{{ user.idnumber }}</b><br>
+        </div>
+   
+
+
+ 
+        <div class="contenedorBtn">
+            <a  class="btn" href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">MODIFICAR DECLACION JURADA</a>
+
+        </div>
+        <div class="contenedorBtnOculto">
+            <a class="btn" href="/logout">CAMBIAR DE USUARIO</a>
+        </div>
+
+    </div>
+    
 </body>
 </html>

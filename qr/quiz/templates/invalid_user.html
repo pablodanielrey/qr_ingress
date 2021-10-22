@@ -1,16 +1,49 @@
 <html>
+    <head>
+        {% load static %}
+        <title>Usuario NO Registrado</title>
+        <link rel="stylesheet" href="{% static 'invalid_user.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">        
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;900&display=swap" rel="stylesheet">
+    
+    
+    </head>
+
+
 <body>
-    <h1>usuario no registrado en au24</h1>
-    <div>
-        <div>
-            Se encuentra intentando obtener un código qr de acceso usando el usuario 
-            {{ preferred_username }}
-            {{ email }}
+    <div class="contenedor">
+        <div class="cabecera">
+            <div class="icono"><i class="fa fa-hand-paper-o fa-5x fa-fw " aria-hidden="true"></i></div>
+            <div class="titulo"><b>USUARIO NO REGISTRADO <BR> EN AU24</div>
         </div>
-        <a href="/logout">cambiar usuario</a>
+
+   
+
+
     </div>
-    <h2>Debe completar primero la declaración jurada de COVID</h2>
-    <a href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">declaración jurada COVID</a>
+
+    <div class="contenedor2">
+        <div class="mensaje">Datos de usuario
+            <b>{{ preferred_username }}</b><br>
+            <b>{{ email }} </b>
+        </div>
+
+
+        <div class="mensaje2">Debe completar la declaración jurada de COVID
+        </div>
+
+
+ 
+        <div class="contenedorBtn">
+            <a  class="btn" href="https://www.au24-2021.econo.unlp.edu.ar/course/view.php?id=382">COMPLETAR AHORA</a>
+
+        </div>
+
+        <div class="contenedorBtnOculto">
+            <a class="btn" href="/logout">CAMBIAR DE USUARIO</a>
+        </div>        
+    </div>
     
 </body>
 </html>

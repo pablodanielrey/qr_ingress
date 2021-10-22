@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+  }*
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "roboto";
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+}
+
+.contenedor {
+    width: 100%;
+    padding: 40px 0 40px 0;
+    background: linear-gradient(90deg,#2cda00,#2a7920) !important;
+
+}
+
+.cabecera {
+    animation-duration: 0.5s;
+    animation-name: aparecer;
+}
+
+.contenedorQR {
+    width: 70%;
+    margin: 40px auto;
+
+    
+}
+
+.qr {
+    width: 100%;
+}
+
+
+.contenedor2 {
+    padding: 0 40px 0 40px;
+}
+
+
+
+
+.titulo {
+    font-size: 60;
+    color: white;
+    font-weight: 300;
+    text-align: center;
+}
+
+
+.mensaje {
+    font-size: 30px;
+    color: rgb(0, 0, 0);
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 40px;
+
+}
+
+.mensaje2 {
+    font-size: 40;
+    color: rgb(0, 0, 0);
+    font-weight: 300;
+    text-align: center;
+    margin-top: 40px;
+
+}
+
+
+.icono {
+    text-align: center;
+    color: white;
+    opacity: 25%;
+    margin-bottom: 20px;
+    font-size: 50px !important;
+}
+
+.btn {
+    background-color: yellowgreen;
+    font-size: 40px;
+    color: black;
+    font-weight: 500;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid black;
+    background: linear-gradient(90deg,#f8f8f8,#fafafa) !important;
+
+  
+}
+
+
+.contenedorBtn {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.contenedorBtnOculto {
+    opacity: 0 !important;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+
+
+a {
+    text-decoration: none;
+}
+
+
+
+
+  @keyframes aparecer {
+    from {
+      margin-top: 0px;
+      opacity: 0%;
+    }
+  
+    to {
+      margin-top: 0%;
+      opacity: 100%;
+    }
+  }
+
