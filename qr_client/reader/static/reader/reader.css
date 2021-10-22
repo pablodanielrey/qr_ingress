@@ -73,6 +73,14 @@ width: 65%;
     left: 10%;
 }
 
+.funcionalidadOculto {
+    position: absolute;
+    opacity: 1%;
+    bottom:150;
+    left: 10%;
+}
+
+
 .generarQR {
     display: flex;
     flex-direction: column;
