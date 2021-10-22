@@ -1,6 +1,7 @@
 
 subir.sh
 subir_reader.sh
+qr_static
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
