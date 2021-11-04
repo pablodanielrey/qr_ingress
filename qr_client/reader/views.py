@@ -1,17 +1,31 @@
 import logging
-import hashlib
-import hmac
-import os
-logging.getLogger().setLevel(logging.DEBUG)
+import datetime
+from zoneinfo import ZoneInfo
 
 from django.shortcuts import render, redirect
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 
 from qr_common import qr, exceptions
 
+from .models import Access
+
 # Create your views here.
 
-TIMER = 3
+TIMER = 1
+
+def registrar_acceso(qrc:qr.QRCode):
+    logging.debug(qrc.to_dict())
+    a = Access(
+        access=datetime.datetime.now(tz=ZoneInfo("America/Argentina/Buenos_Aires")),
+        firstname=qrc.firstname,
+        lastname=qrc.lastname,
+        username=qrc.username,
+        email=qrc.email,
+        number=qrc.id_number,
+        grade=qrc.grade,
+        timestamp=qrc.timestamp
+    )
+    a.save()
 
 def index(request:HttpRequest):
     if request.method == 'GET':
@@ -24,6 +38,9 @@ def index(request:HttpRequest):
         try:
             m = qr.Message.from_string(qrcode)
             qrc = qr.QRCode.from_message(m.message)
+
+            registrar_acceso(qrc)
+
         except exceptions.InvalidHash as e:
             logging.exception(e)
             return redirect('reader:invalid_qr')
@@ -67,3 +84,22 @@ def invalid(request):
         context[k] = v
 
     return render(request, 'invalid.html', context)
+
+
+def access(request):
+    access = Access.objects.all()
+    data = []
+    for a in access:
+        data.append(
+            {
+                'firstname': a.firstname,
+                'lastname': a.lastname,
+                'username': a.username,
+                'email': a.email,
+                'number': a.number,
+                'grade': a.grade,
+                'timestamp': a.timestamp,
+                'access': a.access
+            }
+        )
+    return JsonResponse(data, safe=False)

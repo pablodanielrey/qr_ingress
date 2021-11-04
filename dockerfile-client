@@ -25,10 +25,12 @@ RUN cd /tmp/libs/qr_common && python3 -m build && pip install /tmp/libs/qr_commo
 COPY qr_client/requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 
-
+RUN mkdir /data
 
 RUN mkdir /src
 COPY qr_client /src
+
+
 
 # COPY docker/pip.conf /etc/
 # COPY docker/entrypoint.sh /
