@@ -1,6 +1,7 @@
 from django.db import models
 
 import uuid
+import logging
 # Create your models here.
 
 class Access(models.Model):
@@ -15,3 +16,12 @@ class Access(models.Model):
     grade = models.CharField(max_length=500, null=True)
     timestamp = models.IntegerField()
     
+
+
+class SyncModel:
+    def __init__(self):
+        pass
+    
+    def sync(self):
+        for a in  Access.objects.all():
+            logging.getLogger(self.__class__.__qualname__).info(f'sincronizando {a}')

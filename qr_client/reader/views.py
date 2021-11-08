@@ -7,7 +7,7 @@ from django.http import HttpRequest, JsonResponse
 
 from qr_common import qr, exceptions
 
-from .models import Access
+from .models import Access, SyncModel
 
 # Create your views here.
 
@@ -103,3 +103,8 @@ def access(request):
             }
         )
     return JsonResponse(data, safe=False)
+
+
+def sync(request):
+    s = SyncModel()
+    s.sync()
