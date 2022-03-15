@@ -88,7 +88,7 @@ def _get_enabled_quiz(user):
 
 def _get_moodle_user(user):
     username = user['preferred_username']
-    moodle_user = User.objects.get(username=username)
+    moodle_user = User.objects.get(username__iexact=username)
     return moodle_user
 
 
